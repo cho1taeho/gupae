@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gupae/core/di/di_set_up.dart';
 import 'package:gupae/presentation/google_map_screen/google_map_screen.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
+  diSetUp();
   runApp(const GupaeApp());
 }
 
