@@ -2,7 +2,8 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmap;
 import 'package:maps_toolkit/maps_toolkit.dart' as toolkit;
 import 'package:gupae/domain/model/subway/subway_toilet.dart';
-import 'package:gupae/domain/repository/subway_repository/subway_toilet_repository.dart';
+
+import '../../repository/subway/subway_toilet_repository.dart';
 
 class GetSubwayToiletUseCase {
   final SubwayToiletRepository _subwayToiletRepository;

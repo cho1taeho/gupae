@@ -6,57 +6,29 @@ import 'package:gupae/presentation/location/location_view_model.dart';
 import 'package:http/http.dart';
 
 import '../../core/di/di_set_up.dart';
+import 'google_map_state.dart';
 
-class GoogleMapScreen extends StatefulWidget {
-  const GoogleMapScreen({super.key});
+class GoogleMapScreen extends StatelessWidget {
+  final GoogleMapState state;
+  final Function(GoogleMapController) onMapCreated;
 
-  @override
-  State<GoogleMapScreen> createState() => _GoogleMapScreenState();
-}
+  const GoogleMapScreen({super.key, required this.state, required this.onMapCreated});
 
-class _GoogleMapScreenState extends State<GoogleMapScreen> {
-  GoogleMapController? _mapController;
-  LatLng _defaultCenter = const LatLng(36.5, 127.5);
-  final LocationViewModel _viewModel = getIt<LocationViewModel>();
 
-  @override
-  void initState() {
-    super.initState();
-    _viewModel.fetchCurrentLocation();
-    _viewModel.addListener(_onStateChanged);
-  }
-  void _onStateChanged() {
-    final current = _viewModel.state.currentLocation;
-    if (current != null && _mapController != null) {
-      _mapController!.moveCamera(CameraUpdate.newLatLng(current));
-    }
-  }
-
-  @override
-  void dispose() {
-    _viewModel.removeListener(_onStateChanged);
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
-    final state = _viewModel.state;
-
+    LatLng _defaultCenter = const LatLng(36.5, 127.5);
     return Scaffold(
       appBar: AppBar(title: const Text('내 주변 화장실')),
       body: Stack(
         children: [
           GoogleMap(
-            onMapCreated: (controller) {
-              _mapController = controller;
-              final current = state.currentLocation;
-              if (current != null) {
-                _mapController!.moveCamera(CameraUpdate.newLatLng(current));
-              }
-            },
+            onMapCreated: onMapCreated,
             initialCameraPosition: CameraPosition(
               target: state.currentLocation ?? _defaultCenter,
               zoom: 14,
             ),
+            markers: state.markers,
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
           ),
