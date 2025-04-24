@@ -17,13 +17,15 @@ class GoogleMapViewModel with ChangeNotifier {
 
     try {
       final current = await _googleMapUseCase.getCurrentLocation();
+      print('📍 현재 위치: $current');
+
       if (current == null) {
         throw Exception('현재 위치를 가져올 수 없습니다.');
       }
 
       final subwayToilets = await _googleMapUseCase.getNearbySubwayToilets(current);
       final publicToilets = await _googleMapUseCase.getNearbyPublicToilets(current);
-
+      print('🚇 지하철 화장실 개수: ${subwayToilets.length}');
       final List<Marker> resultMarkers = [];
 
       for (final toilet in subwayToilets) {

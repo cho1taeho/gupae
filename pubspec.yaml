@@ -112,7 +112,7 @@ flutter:
   assets:
     - assets/images/
     - .env
-    - assets/data/public_toilets_seoul.json
-    - assets/data/subway_toilets_seoul.json
+    - assets/data/public_seoul.json
+    - assets/data/subway_seoul.json
 dependency_overrides:
   analyzer: ^6.2.0

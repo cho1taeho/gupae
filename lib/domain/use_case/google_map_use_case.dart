@@ -29,7 +29,7 @@ class GetGoogleMapUseCase {
     return allToilets.where((e) {
       final toiletPoint = toolkit.LatLng(e.latitude, e.longitude);
       final distance = toolkit.SphericalUtil.computeDistanceBetween(currentPoint, toiletPoint);
-      return distance <= 1000.0;
+      return distance <= 2000.0;
     }).toList();
   }
 
@@ -40,7 +40,7 @@ class GetGoogleMapUseCase {
     return allToilets.where((e) {
       final toiletPoint = toolkit.LatLng(e.lat, e.lng);
       final distance = toolkit.SphericalUtil.computeDistanceBetween(currentPoint, toiletPoint);
-      return distance <= 1000.0;
+      return distance <= 2000.0;
     }).toList();
   }
 }

@@ -18,7 +18,7 @@ abstract class SubwayToilet with _$SubwayToilet {
 }
 
 
-double _toDouble(dynamic value) => double.tryParse(value.toString()) ?? 0.0;
+double _toDouble(dynamic value) => double.tryParse(value.toString().trim()) ?? 0.0;
 
 bool _fromJsonIsOutsideGate(String value) => value.trim() == '외부';
 String _toJsonIsOutsideGate(bool value) => value ? '외부' : '내부';

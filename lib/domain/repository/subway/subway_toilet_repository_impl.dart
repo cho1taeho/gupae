@@ -11,7 +11,7 @@ class SubwayToiletRepositoryImpl implements SubwayToiletRepository {
   SubwayToiletRepositoryImpl(this._subwayDataSource);
 
   @override
-  Future<List<SubwayToilet>> getSubwayToilets() {
+  Future<List<SubwayToilet>> getSubwayToilets() async {
     return _subwayDataSource.getSubwayToilets();
   }
 

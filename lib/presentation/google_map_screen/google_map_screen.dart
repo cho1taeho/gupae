@@ -11,8 +11,9 @@ import 'google_map_state.dart';
 class GoogleMapScreen extends StatelessWidget {
   final GoogleMapState state;
   final Function(GoogleMapController) onMapCreated;
+  final VoidCallback onCurrentLocationTap;
 
-  const GoogleMapScreen({super.key, required this.state, required this.onMapCreated});
+  const GoogleMapScreen({super.key, required this.state, required this.onMapCreated, required this.onCurrentLocationTap});
 
 
   @override

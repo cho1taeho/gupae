@@ -6,12 +6,17 @@ import 'package:gupae/presentation/google_map_screen/google_map_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../presentation/google_map_screen/google_map_screen.dart';
+import '../../presentation/google_map_screen/google_map_screen_root.dart';
+import '../../presentation/google_map_screen/google_map_view_model.dart';
+import '../di/di_set_up.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => GoogleMapScreen(state: GoogleMapState(), onMapCreated: (controller) {},),
+      builder: (context, state) => GoogleMapScreenRoot(
+        googleMapViewModel: getIt<GoogleMapViewModel>(),
+      ),
       routes: [
         GoRoute(
           path: 'sign-in',
