@@ -19,6 +19,7 @@ abstract class GoogleMapState with _$GoogleMapState {
     @Default(<PublicToilet>[]) List<PublicToilet> publicToilets,
 
     @JsonKey(ignore: true) @Default(<Marker>{}) Set<Marker> markers,
+    @Default(false) bool noResult,
   }) = _GoogleMapState;
   
   factory GoogleMapState.fromJson(Map<String, Object?> json) => _$GoogleMapStateFromJson(json); 
