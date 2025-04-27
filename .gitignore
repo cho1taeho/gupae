@@ -49,3 +49,6 @@ app.*.map.json
 
 android/app/google-services.json
 lib/firebase_options.dart
+
+# Flutter signing key
+android/app/key.properties
