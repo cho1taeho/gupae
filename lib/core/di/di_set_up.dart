@@ -35,7 +35,7 @@ void diSetUp() {
 
   getIt.registerSingleton(GetLocationUseCase(getIt()));
   getIt.registerSingleton(GetSubwayToiletUseCase(getIt()));
-  getIt.registerSingleton(GetGoogleMapUseCase(subwayRepository: getIt(), publicRepository: getIt()));
+  getIt.registerSingleton(GetGoogleMapUseCase(subwayRepository: getIt(), publicRepository: getIt(), locationRepository: getIt()));
   
   getIt.registerFactory<LocationViewModel>(() => LocationViewModel(getIt()));
   getIt.registerFactory<SubwayToiletViewModle>(() => SubwayToiletViewModle(getIt()));

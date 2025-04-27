@@ -16,17 +16,56 @@ class GoogleMapScreenRoot extends StatefulWidget {
 class _GoogleMapScreenRootState extends State<GoogleMapScreenRoot> {
   GoogleMapController? _controller;
   bool _controllerInitialized = false;
+  bool _isLoading = true;
+  LatLng? _initialLocation;
 
   @override
   void initState() {
     super.initState();
-    widget.googleMapViewModel.initialize(const LatLng(37.498085, 127.0143833)).then((_) {
-      final current = widget.googleMapViewModel.state.currentLocation;
-      if (current != null && _controllerInitialized && _controller != null) {
-        _controller!.animateCamera(CameraUpdate.newLatLngZoom(current, 14));
+    _getMyLocationFirst();
+  }
+
+  Future<void> _getMyLocationFirst() async {
+    try {
+      final myLocation = await widget.googleMapViewModel.getMyLocation();
+
+      if (myLocation != null) {
+        _initialLocation = myLocation;
+        await widget.googleMapViewModel.initialize(myLocation);
       } else {
-        print('⚠️ 초기 위치 이동 실패: 위치 또는 컨트롤러 없음');
+        print('⚠️ 현재 위치 가져오기 실패');
+
+        _initialLocation = const LatLng(37.5665, 126.9780);
+        await widget.googleMapViewModel.initialize(_initialLocation!);
       }
+    } catch (e) {
+      print('⚠️ 위치 초기화 실패: $e');
+      _initialLocation = const LatLng(37.5665, 126.9780);
+      await widget.googleMapViewModel.initialize(_initialLocation!);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _moveToMyLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final myLocation = await widget.googleMapViewModel.getMyLocation();
+
+    if (myLocation != null && _controllerInitialized && _controller != null) {
+      _controller!.animateCamera(CameraUpdate.newLatLngZoom(myLocation, 14));
+      widget.googleMapViewModel.setCenter(myLocation);
+      widget.googleMapViewModel.refreshToiletsAtCenter();
+    } else {
+      print('⚠️ 내 위치로 이동 실패');
+    }
+
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -35,13 +74,13 @@ class _GoogleMapScreenRootState extends State<GoogleMapScreenRoot> {
       _controller = action.controller;
       _controllerInitialized = true;
       print('✅ GoogleMapController 저장됨');
-    } else if (action is OnCurrentLocationTap) {
-      final current = widget.googleMapViewModel.state.currentLocation;
-      if (current != null && _controllerInitialized && _controller != null) {
-        _controller!.animateCamera(CameraUpdate.newLatLng(current));
-      } else {
-        print('⚠️ 내 위치로 이동 실패: 위치 또는 컨트롤러 없음');
+
+
+      if (_initialLocation != null) {
+        _controller!.animateCamera(CameraUpdate.newLatLngZoom(_initialLocation!, 14));
       }
+    } else if (action is OnCurrentLocationTap) {
+      _moveToMyLocation();
     } else if (action is OnCameraMove) {
       widget.googleMapViewModel.setCenter(action.position.target);
     } else if (action is OnCameraIdle) {
@@ -51,6 +90,21 @@ class _GoogleMapScreenRootState extends State<GoogleMapScreenRoot> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('위치 정보를 가져오는 중...', style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        ),
+      );
+    }
+
     return ListenableBuilder(
       listenable: widget.googleMapViewModel,
       builder: (context, _) {

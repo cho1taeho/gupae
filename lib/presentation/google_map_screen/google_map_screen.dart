@@ -6,6 +6,7 @@ import 'package:gupae/presentation/location/location_view_model.dart';
 import 'package:http/http.dart';
 
 import '../../core/di/di_set_up.dart';
+import '../components/add_toilet_dialg_state.dart';
 import 'google_map_action.dart';
 import 'google_map_state.dart';
 
@@ -38,6 +39,31 @@ class GoogleMapScreen extends StatelessWidget {
             myLocationButtonEnabled: true,
             onCameraMove: (position) => onAction(GoogleMapAction.onCameraMove(position)),
             onCameraIdle: () => onAction(const GoogleMapAction.onCameraIdle()),
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                final selectedLocation = state.currentLocation;
+                if (selectedLocation == null) {
+                  print('⚠️ 현재 중심 위치 없음');
+                  return;
+                }
+
+                final result = await showDialog<Map<String, dynamic>>(
+                  context: context,
+                  builder: (context) => AddToiletDialog(selectedLocation: selectedLocation),
+                );
+
+                if (result != null) {
+                  print('✅ 화장실 추가 입력: $result');
+                }
+              },
+              child: Image.asset(
+                'assets/images/pin.png',
+                width: 36,
+                height: 36,
+              ),
+            ),
           ),
           if (state.isLoading)
             const Center(child: CircularProgressIndicator()),

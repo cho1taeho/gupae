@@ -23,6 +23,15 @@ class GoogleMapViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<LatLng?> getMyLocation() async {
+    try {
+      final position = await _useCase.getCurrentLocation();
+      return position;
+    } catch (e) {
+      print('⚠️ 위치 가져오기 실패: $e');
+      return null;
+    }
+  }
 
   void setCenter(LatLng center) {
     if (_state.currentLocation != center) {
@@ -45,8 +54,8 @@ class GoogleMapViewModel with ChangeNotifier {
   }
 
   void _loadToiletsAt(LatLng center) {
-    final subwayToilets = _useCase.getNearbySubwayToilets(center, 2000);
-    final publicToilets = _useCase.getNearbyPublicToilets(center, 2000);
+    final subwayToilets = _useCase.getNearbySubwayToilets(center, 500);
+    final publicToilets = _useCase.getNearbyPublicToilets(center, 500);
 
     final markers = <Marker>[
       ...subwayToilets.map((t) => Marker(

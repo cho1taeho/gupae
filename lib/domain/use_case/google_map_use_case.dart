@@ -1,4 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gupae/domain/repository/location/location_repository.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as toolkit;
 
 import '../model/public/public_toilet.dart';
@@ -9,6 +10,7 @@ import '../repository/subway/subway_toilet_repository.dart';
 class GetGoogleMapUseCase {
   final SubwayToiletRepository subwayRepository;
   final PublicToiletRepository publicRepository;
+  final LocationRepository locationRepository;
 
   List<SubwayToilet> _cachedSubwayToilets = [];
   List<PublicToilet> _cachedPublicToilets = [];
@@ -16,13 +18,16 @@ class GetGoogleMapUseCase {
   GetGoogleMapUseCase({
     required this.subwayRepository,
     required this.publicRepository,
+    required this.locationRepository,
   });
 
   Future<void> loadAllToilets() async {
     _cachedSubwayToilets = await subwayRepository.getSubwayToilets();
     _cachedPublicToilets = await publicRepository.getPublicToilets();
   }
-
+  Future<LatLng?> getCurrentLocation() async {
+    return await locationRepository.getCurrentLocation();
+  }
   List<SubwayToilet> getNearbySubwayToilets(LatLng center, double radiusMeters) {
     final centerPoint = toolkit.LatLng(center.latitude, center.longitude);
     return _cachedSubwayToilets.where((e) {
