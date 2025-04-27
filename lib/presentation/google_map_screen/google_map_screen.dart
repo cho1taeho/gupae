@@ -48,7 +48,6 @@ class GoogleMapScreen extends StatelessWidget {
                   print('⚠️ 현재 중심 위치 없음');
                   return;
                 }
-
                 final result = await showDialog<Map<String, dynamic>>(
                   context: context,
                   builder: (context) => AddToiletDialog(selectedLocation: selectedLocation),
@@ -83,7 +82,7 @@ class GoogleMapScreen extends StatelessWidget {
             ),
           if (state.noResult)
             Positioned(
-              bottom: 100, // 기존 top: 20 → bottom으로 이동
+              bottom: 100,
               left: 20,
               right: 20,
               child: Container(
@@ -94,7 +93,7 @@ class GoogleMapScreen extends StatelessWidget {
                 ),
                 child: const Text(
                   '화장실 정보가 없습니다',
-                  style: TextStyle(color: Colors.white, fontSize: 14), // 폰트 줄임
+                  style: TextStyle(color: Colors.white, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
               ),
