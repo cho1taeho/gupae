@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gupae/presentation/google_map_screen/google_map_view_model.dart';
+import '../../core/utils/permission_utils.dart';
 import 'google_map_action.dart';
 import 'google_map_screen.dart';
 
@@ -27,6 +28,16 @@ class _GoogleMapScreenRootState extends State<GoogleMapScreenRoot> {
 
   Future<void> _getMyLocationFirst() async {
     try {
+      final isGranted = await PermissionUtils.requestLocationPermission();
+      if (!isGranted) {
+        print('❌ 위치 권한 거부 - 앱 종료');
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).pop();
+        });
+        return;
+
+      }
+
       final myLocation = await widget.googleMapViewModel.getMyLocation();
 
       if (myLocation != null) {
@@ -34,7 +45,6 @@ class _GoogleMapScreenRootState extends State<GoogleMapScreenRoot> {
         await widget.googleMapViewModel.initialize(myLocation);
       } else {
         print('⚠️ 현재 위치 가져오기 실패');
-
         _initialLocation = const LatLng(37.5665, 126.9780);
         await widget.googleMapViewModel.initialize(_initialLocation!);
       }

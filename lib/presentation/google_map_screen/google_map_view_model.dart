@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gupae/domain/use_case/google_map_use_case.dart';
 import 'google_map_state.dart';
+import 'package:gupae/core/utils/permission_utils.dart';
 
 class GoogleMapViewModel with ChangeNotifier {
   final GetGoogleMapUseCase _useCase;
@@ -10,6 +11,7 @@ class GoogleMapViewModel with ChangeNotifier {
 
   GoogleMapState _state = const GoogleMapState();
   GoogleMapState get state => _state;
+
 
   Future<void> initialize(LatLng center) async {
     _state = _state.copyWith(isLoading: true);
@@ -24,6 +26,12 @@ class GoogleMapViewModel with ChangeNotifier {
     }
   }
   Future<LatLng?> getMyLocation() async {
+    final isGranted = await PermissionUtils.requestLocationPermission();
+    if (!isGranted) {
+      print('⚠️ 위치 권한 없음');
+      return null;
+    }
+
     try {
       final position = await _useCase.getCurrentLocation();
       return position;
@@ -32,7 +40,6 @@ class GoogleMapViewModel with ChangeNotifier {
       return null;
     }
   }
-
   void setCenter(LatLng center) {
     if (_state.currentLocation != center) {
       _state = _state.copyWith(currentLocation: center);
