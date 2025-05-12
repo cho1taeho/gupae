@@ -18,7 +18,7 @@ class GetSubwayToiletUseCase {
       final toiletPoint = toolkit.LatLng(e.latitude, e.longitude);
       final distance = toolkit.SphericalUtil.computeDistanceBetween(currentPoint, toiletPoint);
 
-      return distance <= 1000.0;
+      return distance <= 1001.0;
     }).toList();
   }
 }
