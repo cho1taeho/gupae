@@ -45,7 +45,6 @@ class GoogleMapScreen extends StatelessWidget {
               onTap: () async {
                 final selectedLocation = state.currentLocation;
                 if (selectedLocation == null) {
-                  print('⚠️ 현재 중심 위치 없음');
                   return;
                 }
                 final result = await showDialog<Map<String, dynamic>>(
@@ -59,8 +58,8 @@ class GoogleMapScreen extends StatelessWidget {
               },
               child: Image.asset(
                 'assets/images/pin.png',
-                width: 36,
-                height: 36,
+                width: 32,
+                height: 32,
               ),
             ),
           ),
