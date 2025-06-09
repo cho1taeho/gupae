@@ -15,7 +15,9 @@ Future<void> main() async {
   );
 
   diSetUp();
-  runApp(const ProviderScope()
+  runApp(const ProviderScope(
+    child: GupaeApp(),
+  )
   );
 }
 
