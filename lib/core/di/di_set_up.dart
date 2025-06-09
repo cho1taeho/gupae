@@ -25,7 +25,7 @@ import '../../domain/repository/subway/subway_toilet_repository_impl.dart';
 final getIt = GetIt.instance;
 
 void diSetUp() {
-  getIt.registerSingleton<LocationDataSource>(LocationDataSoruceImpl());
+  getIt.registerSingleton<LocationDataSource>(LocationDataSourceImpl());
   getIt.registerSingleton<SubwayToiletDataSource>(SubwayToiletDataSourceImpl());
   getIt.registerSingleton<PublicToiletDataSource>(PublicToiletDataSourceImpl());
 
