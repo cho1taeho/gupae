@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:gupae/data/data_source/location/location_data_source.dart';
 
 
-class LocationDataSoruceImpl implements LocationDataSource {
+class LocationDataSourceImpl implements LocationDataSource {
   @override
   Future<LatLng> getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
