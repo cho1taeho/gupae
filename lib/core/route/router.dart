@@ -14,8 +14,8 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => GoogleMapScreenRoot(
-        googleMapViewModel: getIt<GoogleMapViewModel>(),
+      builder: (context, state) => const GoogleMapScreenRoot(
+
       ),
       routes: [
         GoRoute(
