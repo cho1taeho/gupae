@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gupae/core/provider/providers.dart';
-import 'package:gupae/presentation/google_map_screen/google_map_view_model.dart';
 import '../../core/utils/permission_utils.dart';
 import 'google_map_action.dart';
 import 'google_map_screen.dart';
