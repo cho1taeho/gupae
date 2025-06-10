@@ -28,7 +28,7 @@ class GoogleMapViewModel with ChangeNotifier {
   Future<LatLng?> getMyLocation() async {
     final isGranted = await PermissionUtils.requestLocationPermission();
     if (!isGranted) {
-      print('⚠️ 위치 권한 없음');
+      print('⚠️ 위치 권한 없음 확인바람');
       return null;
     }
 
